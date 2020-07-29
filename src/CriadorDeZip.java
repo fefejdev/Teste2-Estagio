@@ -1,11 +1,12 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.zip.*;
 
 public class CriadorDeZip {
     static final String caminho = "Teste_Intuitive_Care_Fernando_Gomes.zip"; // nome do arquivo .zip a ser criado
     static final int buffer  = 1024;
 
-    public static void comprime(final String... srcs) throws IOException {
+    public static void comprime(final ArrayList<String> srcs) throws IOException {
 
     int controlador;
     final byte[] dados = new byte[buffer];
