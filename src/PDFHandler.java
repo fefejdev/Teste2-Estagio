@@ -1,6 +1,5 @@
 // Classe responsável pelo tratamento dos PDFs
 import com.opencsv.CSVWriter;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -8,14 +7,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PDFHandler {
-    //TODO Mecanismos para extrair dados do pdf
     private static File arquivo = new File("Padrao_TISS_Componente_Organizacional_202006.pdf");
     private static ArrayList<String> nomeArquivos = new ArrayList<>();
 
@@ -75,9 +72,10 @@ public class PDFHandler {
 
         Scanner fileReader = new Scanner(txt);
 
-        int controlador;
-
         String temp = fileReader.nextLine();
+
+        nomeArquivos.add(temp + ".csv");
+
         Writer writer = Files.newBufferedWriter(Paths.get(temp + ".csv"));
 
         CSVWriter csvWriter = new CSVWriter(writer);
