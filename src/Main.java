@@ -26,6 +26,8 @@ public class Main {
             CriadorDeZip.comprime(src);
         } else if(verifica == 3){
             PDFHandler.pdfParaTxt();
+            PDFHandler.separadorDeTabelas();
+
         }
 
 
