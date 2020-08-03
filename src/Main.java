@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
         int verifica;
@@ -21,24 +22,18 @@ public class Main {
             }while(escolha.equals("S"));
             CriadorDeZip.comprime(src);
         } else if(verifica == 1){
-             src.add("fffff.csv");
-             src.add("Padrao_TISS_Componente_Organizacional_202006.pdf");
-            CriadorDeZip.comprime(src);
-        } else if(verifica == 3){
             PDFHandler.pdfParaTxt();
             PDFHandler.separadorDeTabelas();
-
+            CriadorDeZip.comprime(PDFHandler.getNomeArquivos());
         }
-
-
 
     }
 
     static public int Menu(){
         Scanner scan = new Scanner(System.in);
         int escolha;
-            System.out.println("Deseja seguir a rotina normal ou comprimir algum arquivo específico? Ou deseja apenas passar o arquivo para txt? \n");
-            System.out.println("1- Rotina normal /  / 2 - Arquivo Específico /  / 3 - Arquivo para txt");
+            System.out.println("Deseja seguir a rotina normal ou comprimir algum arquivo específico?  \n");
+            System.out.println("1- Rotina normal /  / 2 - Arquivo Específico ");
             escolha = scan.nextInt();
             scan.nextLine();
         return escolha;

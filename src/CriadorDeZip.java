@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.zip.*;
@@ -24,11 +25,14 @@ public class CriadorDeZip {
         while ((controlador = bis.read(dados, 0, buffer)) != -1) {
             zos.write(dados, 0, controlador);
         }
-        bis.close();
-    }
+            bis.close();
+            arquivo.delete();
+        }
 
     zos.close();
-}
+    JOptionPane.showMessageDialog(null, "Arquivos convertidos e comprimidos com sucesso");
+    }
+
 }
 
 

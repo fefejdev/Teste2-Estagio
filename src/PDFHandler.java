@@ -1,92 +1,1 @@
-// Classe responsável pelo tratamento dos PDFs
-import com.opencsv.CSVWriter;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-public class PDFHandler {
-    private static File arquivo = new File("Padrao_TISS_Componente_Organizacional_202006.pdf");
-    private static ArrayList<String> nomeArquivos = new ArrayList<>();
-
-    public static void pdfParaTxt() throws IOException {
-        PDDocument documento = PDDocument.load(arquivo);
-        System.out.println(documento.isEncrypted());
-        PDFTextStripper tStripper  = new PDFTextStripper();
-
-        String text = tStripper.getText(documento);
-        documento.close();
-
-        File destino = new File("Padrao_TISS_Componente_Organizacional_202006_TXT.txt");
-
-        FileWriter fileWriter = new FileWriter(destino);
-
-        fileWriter.write(text);
-        fileWriter.flush();
-        fileWriter.close();
-    }
-
-    public static void separadorDeTabelas() throws IOException{
-
-        File txt = new File("Padrao_TISS_Componente_Organizacional_202006_TXT.txt");
-        Scanner fileReader = new Scanner(txt);
-        FileWriter fw;
-
-        while(fileReader.hasNextLine()){
-            String data = fileReader.nextLine();
-
-            if(data.equals("Quadro 30 – Tabela de tipo de demandante ")){
-
-                File tabela30 = new File(data+".txt");
-
-                fw = new FileWriter(tabela30);
-
-                data = fileReader.nextLine();
-
-                do{
-                    fw.write(data + "\n");
-                    System.out.println(data);
-
-                    if(fileReader.hasNextLine())
-                        data = fileReader.nextLine();
-
-                }while(!(data.equals("Fonte: Elaborado pelos autores. ")));
-
-                fw.close();
-                tabelasParaCsv(tabela30.getName());
-            }
-
-        }
-    }
-
-    public static void tabelasParaCsv(String caminho) throws IOException {
-
-        File txt = new File(caminho);
-
-        Scanner fileReader = new Scanner(txt);
-
-        String temp = fileReader.nextLine();
-
-        nomeArquivos.add(temp + ".csv");
-
-        Writer writer = Files.newBufferedWriter(Paths.get(temp + ".csv"));
-
-        CSVWriter csvWriter = new CSVWriter(writer);
-        while(fileReader.hasNextLine()){
-            temp = fileReader.nextLine();
-
-            csvWriter.writeNext(temp.split(" ", 2));
-
-            }
-        csvWriter.flush();
-        writer.close();
-
-        }
-    }
+// Classe responsável pelo tratamento dos PDFsimport com.opencsv.CSVWriter;import org.apache.pdfbox.pdmodel.PDDocument;import org.apache.pdfbox.text.PDFTextStripper;import java.io.*;import java.nio.file.Files;import java.nio.file.Paths;import java.util.ArrayList;import java.util.Scanner;public class PDFHandler {    private static File arquivo = new File("Padrao_TISS_Componente_Organizacional_202006.pdf");    private static ArrayList<String> nomeArquivos = new ArrayList<>();    public static void pdfParaTxt() throws IOException {        PDDocument documento = PDDocument.load(arquivo);        PDFTextStripper tStripper = new PDFTextStripper();        String text = tStripper.getText(documento);        documento.close();        File destino = new File("Padrao_TISS_Componente_Organizacional_202006_TXT.txt");        FileWriter fileWriter = new FileWriter(destino);        fileWriter.write(text);        fileWriter.flush();        fileWriter.close();    }    public static void separadorDeTabelas() throws IOException {        File txt = new File("Padrao_TISS_Componente_Organizacional_202006_TXT.txt");        Scanner fileReader = new Scanner(txt);        FileWriter fw;        String data;        while (fileReader.hasNextLine()) {            data = fileReader.nextLine();            if (data.equals("Quadro 30 – Tabela de tipo de demandante ")) {                File tabela30 = new File(data + ".txt");                fw = new FileWriter(tabela30);                data = fileReader.nextLine();                do {                    fw.write(data + "\n");                    if (fileReader.hasNextLine())                        data = fileReader.nextLine();                } while (!(data.equals("Fonte: Elaborado pelos autores. ")));                fw.close();                tabelasParaCsv(tabela30.getName());            } else if(data.equals("Quadro 31 – Tabela de categoria do Padrão TISS ")){                File tabela31 = new File(data + ".txt");                fw = new FileWriter(tabela31);                data = fileReader.nextLine();                do {                    if(data.equals("Padrão TISS - Componente Organizacional – junho de 2020 ")|| data.equals("            ") ||                    data.equals(" ") || data.equals("82 ") || data.equals("83 ") || data.equals("84 ") || data.equals("85 ")                    || data.equals("86 ")){                        if (fileReader.hasNextLine())                            data = fileReader.nextLine();                    }else if(data.length() < 5 ){                        String temp;                        data = data.concat(fileReader.nextLine());                        temp = fileReader.nextLine();                        if(temp.charAt(0) == data.charAt(0)){                            fw.write(data + "\n");                            fw.write(temp + "\n");                            if (fileReader.hasNextLine())                                data = fileReader.nextLine();                        } else {                            data = data.concat(temp);                            fw.write(data + "\n");                            if (fileReader.hasNextLine())                                data = fileReader.nextLine();                        }                    } else{                        fw.write(data + "\n");                        if (fileReader.hasNextLine())                            data = fileReader.nextLine();                    }                } while (!(data.equals("Fonte: Elaborado pelos autores. ")));                fw.close();                tabelasParaCsv(tabela31.getName());            } else if (data.equals("Quadro 32 – Tabela de tipo de solicitação ")) {                File tabela32 = new File(data + ".txt");                fw = new FileWriter(tabela32);                data = fileReader.nextLine();                while (!(data.equals("Tabela de Tipo de Solicitação "))) {                    data = fileReader.nextLine();                }                while (!(data.equals("88 ")) && fileReader.hasNextLine()) {                    fw.write(data + "\n");                    data = fileReader.nextLine();                }                fw.close();                tabelasParaCsv(tabela32.getName());            }        }        fileReader.close();        txt.delete();    }    public static void tabelasParaCsv(String caminho) throws IOException {        File txt = new File(caminho);        Scanner fileReader = new Scanner(txt);        String temp = fileReader.nextLine();        nomeArquivos.add(temp + ".csv");        Writer writer = Files.newBufferedWriter(Paths.get(temp + ".csv"));        CSVWriter csvWriter = new CSVWriter(writer);        while (fileReader.hasNextLine()) {            temp = fileReader.nextLine();            csvWriter.writeNext(temp.split(" ", 2));        }        fileReader.close();        csvWriter.flush();        writer.close();        txt.delete();    }    public static ArrayList<String> getNomeArquivos() {        return nomeArquivos;    }}
