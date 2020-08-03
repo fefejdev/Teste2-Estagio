@@ -18,6 +18,12 @@ Libs utilizadas:
 
 - OpenCSV - v.5.2 - https://sourceforge.net/projects/opencsv/files/latest/download
 
+Maven
+
+- Apache PDFBox - https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox/2.0.20
+
+- OpenCSV -https://mvnrepository.com/artifact/com.opencsv/opencsv/5.2
+
 IDE Utilizada:
 
 - IntelliJ IDEA Ultimate 2019.3.5
