@@ -28,4 +28,5 @@ Maven
 
 IDE Utilizada:
 
-- IntelliJ IDEA Ultimate 2019.3.5
+- IntelliJ IDEA Ultimate 2019.3.3
+
